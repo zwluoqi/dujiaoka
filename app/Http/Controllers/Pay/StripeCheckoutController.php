@@ -72,12 +72,14 @@ class StripeCheckoutController extends PayController
             case 'checkout.session.completed':
                 $session = $event->data->object;
                 if ($session->payment_status == 'paid') {
-                    $this->orderProcessService->completedOrder($session->client_reference_id,$order->actual_price,$session->payment_intent);
+                    $payment_intent = $session->payment_intent ?? $session->id; // 确保 payment_intent 是字符串
+                    $this->orderProcessService->completedOrder($session->client_reference_id,$order->amount_total,$payment_intent);
                 }
                 break;
             case 'checkout.session.async_payment_succeeded':
                 $session = $event->data->object;
-                    $this->orderProcessService->completedOrder($session->client_reference_id,$order->actual_price,$session->payment_intent);
+                $payment_intent = $session->payment_intent ?? $session->id; // 确保 payment_intent 是字符串
+                $this->orderProcessService->completedOrder($session->client_reference_id,$order->amount_total,$payment_intent);
                 break;
         }
         http_response_code(200);
