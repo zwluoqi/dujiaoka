@@ -19,6 +19,13 @@ class StripeCheckoutController extends PayController
                 ->amount($this->order->actual_price)
                 ->round(2)
                 ->get();
+            if($price ==0){
+                //打印日志
+                Log::info('stripe price is 0');
+                $price = $this->order->actual_price;
+                //打印真是价格
+                Log::info('stripe price is '.$price);
+            }
             $TotalAmount = $price * 100;
             $data = [
                 'success_url'         => url('detail-order-sn', ['orderSN' => $this->order->order_sn]),
@@ -73,13 +80,13 @@ class StripeCheckoutController extends PayController
                 $session = $event->data->object;
                 if ($session->payment_status == 'paid') {
                     $payment_intent = $session->payment_intent ?? $session->id; // 确保 payment_intent 是字符串
-                    $this->orderProcessService->completedOrder($session->client_reference_id,$order->amount_total,$payment_intent);
+                    $this->orderProcessService->completedOrder($session->client_reference_id,$order->actual_price,$payment_intent);
                 }
                 break;
             case 'checkout.session.async_payment_succeeded':
                 $session = $event->data->object;
                 $payment_intent = $session->payment_intent ?? $session->id; // 确保 payment_intent 是字符串
-                $this->orderProcessService->completedOrder($session->client_reference_id,$order->amount_total,$payment_intent);
+                $this->orderProcessService->completedOrder($session->client_reference_id,$order->actual_price,$payment_intent);
                 break;
         }
         http_response_code(200);
