@@ -57,6 +57,11 @@ class StripeCheckoutController extends PayController
     {   
         $payload = file_get_contents('php://input');
         $data = json_decode($payload, true);
+        if(!array_key_exists('client_reference_id', $data['data']['object'])){
+            // return 'order error';
+            http_response_code(200);
+            exit();
+        }
         if(!$this->orderService->detailOrderSN($data['data']['object']['client_reference_id'])){
             // return 'order error';
             http_response_code(200);
