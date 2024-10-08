@@ -42,7 +42,8 @@ class StripeCheckoutController extends PayController
                     'quantity'   => 1
                 ]],
                 'mode'                => 'payment',
-                'customer_email'      => $this->order->email
+                'customer_email'      => $this->order->email,
+                'payment_method_types'=> ['card', 'alipay'],
             ]; 
             $session = Session::create($data);
                 return redirect()->away($session->url);//可以使用自定义域名
