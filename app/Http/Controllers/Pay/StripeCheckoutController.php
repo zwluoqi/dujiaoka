@@ -58,11 +58,15 @@ class StripeCheckoutController extends PayController
         $payload = file_get_contents('php://input');
         $data = json_decode($payload, true);
         if(!$this->orderService->detailOrderSN($data['data']['object']['client_reference_id'])){
-            return 'order error';
+            // return 'order error';
+            http_response_code(200);
+            exit();
         }
         $order = $this->orderService->detailOrderSN($data['data']['object']['client_reference_id']);
         if(!$this->payService->detail($order->pay_id)){
-            return 'order error';
+            // return 'order error';
+            http_response_code(200);
+            exit();
         }
         $payGateway = $this->payService->detail($order->pay_id);
         $endpoint_secret = $payGateway->merchant_pem;
