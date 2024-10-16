@@ -13,19 +13,20 @@ class StripeCheckoutController extends PayController
       { 
         try{ $this->loadGateWay($orderSN, $payway);
             \Stripe\Stripe::setApiKey($this->payGateway->merchant_id);
-            $price = Currency::convert()
-                ->from('CNY')
-                ->to('HKD')
-                ->amount($this->order->actual_price)
-                ->round(2)
-                ->get();
-            if($price ==0){
-                //打印日志
-                Log::info('stripe price is 0');
-                $price = $this->order->actual_price;
-                //打印真是价格
-                Log::info('stripe price is '.$price);
-            }
+            // $price = Currency::convert()
+            //     ->from('CNY')
+            //     ->to('HKD')
+            //     ->amount($this->order->actual_price)
+            //     ->round(2)
+            //     ->get();
+            // if($price ==0){
+            //     //打印日志
+            //     Log::info('stripe price is 0');
+            //     $price = $this->order->actual_price;
+            //     //打印真是价格
+            //     Log::info('stripe price is '.$price);
+            // }
+            $price = $this->order->actual_price;
             $TotalAmount = $price * 100;
             $data = [
                 'success_url'         => url('detail-order-sn', ['orderSN' => $this->order->order_sn]),
@@ -33,7 +34,8 @@ class StripeCheckoutController extends PayController
                 'client_reference_id' => $this->order->order_sn,
                 'line_items' => [[
                     'price_data' => [
-                        'currency'     => 'HKD',
+                        // 'currency'     => 'HKD',
+                        'currency'     => 'CNY',
                         'product_data' => [
                             'name' => $this->order->order_sn
                         ],
