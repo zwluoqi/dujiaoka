@@ -35,7 +35,7 @@ class StripeCheckoutController extends PayController
                 'line_items' => [[
                     'price_data' => [
                         // 'currency'     => 'HKD',
-                        'currency'     => 'CNY',
+                        'currency'     => 'cny',
                         'product_data' => [
                             'name' => $this->order->order_sn
                         ],
@@ -45,7 +45,7 @@ class StripeCheckoutController extends PayController
                 ]],
                 'mode'                => 'payment',
                 'customer_email'      => $this->order->email,
-                'payment_method_types'=> ['card', 'alipay'],
+                'payment_method_types'=> ['alipay', 'card'],
             ]; 
             $session = Session::create($data);
                 return redirect()->away($session->url);//可以使用自定义域名
