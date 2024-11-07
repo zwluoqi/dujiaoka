@@ -46,6 +46,12 @@ class StripeCheckoutController extends PayController
                 'mode'                => 'payment',
                 'customer_email'      => $this->order->email,
                 'payment_method_types'=> ['alipay','wechat_pay', 'card'],
+                  # Specify the client (currently, Checkout only supports a client value of "web")
+                'payment_method_options' => [
+                    'wechat_pay' => [
+                    'client'=> 'web',
+                    ],
+                ],
             ]; 
             $session = Session::create($data);
                 return redirect()->away($session->url);//可以使用自定义域名
