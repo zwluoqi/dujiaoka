@@ -41,23 +41,24 @@ class OrderUpdated
             'ord_info' => str_replace(PHP_EOL, '<br/>', $event->order->info)
         ];
         $to = $event->order->email;
+        Log::info('to:'.$to);
         // 邮件
-        if ($event->order->type == Order::MANUAL_PROCESSING) {
-            switch ($event->order->status) {
-                case Order::STATUS_PENDING:
-                    $mailtpl = Emailtpl::query()->where('tpl_token', 'pending_order')->first()->toArray();
-                    self::sendMailToOrderStatus($mailtpl, $order, $to);
-                    break;
-                case Order::STATUS_COMPLETED:
-                    $mailtpl = Emailtpl::query()->where('tpl_token', 'completed_order')->first()->toArray();
-                    self::sendMailToOrderStatus($mailtpl, $order, $to);
-                    break;
-                case Order::STATUS_FAILURE:
-                    $mailtpl = Emailtpl::query()->where('tpl_token', 'failed_order')->first()->toArray();
-                    self::sendMailToOrderStatus($mailtpl, $order, $to);
-                    break;
-            }
+        // if ($event->order->type == Order::MANUAL_PROCESSING) {
+        switch ($event->order->status) {
+            case Order::STATUS_PENDING:
+                $mailtpl = Emailtpl::query()->where('tpl_token', 'pending_order')->first()->toArray();
+                self::sendMailToOrderStatus($mailtpl, $order, $to);
+                break;
+            case Order::STATUS_COMPLETED:
+                $mailtpl = Emailtpl::query()->where('tpl_token', 'completed_order')->first()->toArray();
+                self::sendMailToOrderStatus($mailtpl, $order, $to);
+                break;
+            case Order::STATUS_FAILURE:
+                $mailtpl = Emailtpl::query()->where('tpl_token', 'failed_order')->first()->toArray();
+                self::sendMailToOrderStatus($mailtpl, $order, $to);
+                break;
         }
+        // }
     }
 
 
