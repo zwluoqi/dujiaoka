@@ -8,6 +8,7 @@ use App\Models\Order;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\OrderUpdated as OrderUpdatedEvent;
+use Illuminate\Support\Facades\Log;
 
 class OrderUpdated
 {
