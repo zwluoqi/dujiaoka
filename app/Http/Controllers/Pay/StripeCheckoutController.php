@@ -45,7 +45,8 @@ class StripeCheckoutController extends PayController
                 ]],
                 'mode'                => 'payment',
                 'customer_email'      => $this->order->email,
-                'payment_method_types'=> ['alipay','wechat_pay', 'card'],
+                // 'payment_method_types'=> ['alipay','wechat_pay', 'card'],
+                'payment_method_types'=> ['alipay','wechat_pay'],
                   # Specify the client (currently, Checkout only supports a client value of "web")
                 'payment_method_options' => [
                     'wechat_pay' => [
