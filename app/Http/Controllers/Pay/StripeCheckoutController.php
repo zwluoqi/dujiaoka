@@ -46,13 +46,13 @@ class StripeCheckoutController extends PayController
                 'mode'                => 'payment',
                 'customer_email'      => $this->order->email,
                 // 'payment_method_types'=> ['alipay','wechat_pay', 'card'],
-                'payment_method_types'=> ['alipay','wechat_pay'],
+                'payment_method_types'=> ['alipay'],
                   # Specify the client (currently, Checkout only supports a client value of "web")
-                'payment_method_options' => [
-                    'wechat_pay' => [
-                    'client'=> 'web',
-                    ],
-                ],
+                // 'payment_method_options' => [
+                //     'wechat_pay' => [
+                //     'client'=> 'web',
+                //     ],
+                // ],
             ]; 
             $session = Session::create($data);
                 return redirect()->away($session->url);//可以使用自定义域名
@@ -88,11 +88,13 @@ class StripeCheckoutController extends PayController
         try{
             $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
         }catch(UnexpectedValueException $e) {
-            http_response_code(400);
-            exit();
+            return $this->err(__('dujiaoka.prompt.abnormal_payment_channel') . $e->getMessage());
+            // http_response_code(400);
+            // exit();
         }catch(SignatureVerificationException $e) {
-            http_response_code(400);
-            exit();
+            return $this->err(__('dujiaoka.prompt.abnormal_payment_channel') . $e->getMessage());
+            // http_response_code(400);
+            // exit();
         }
         switch($event->type){
             case 'checkout.session.completed':
