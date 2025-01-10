@@ -13,9 +13,12 @@ return [
     'templates' => [
         'unicorn' => '官方[unicorn-独角兽]',
         'luna' => 'Luna[Julyssn]',
-        'hyper' => 'hyper[Bimoe]'
+        'hyper' => 'hyper[Bimoe]',
+        'riniba_01' => 'riniba_01[riniba]',
+        'riniba_02' => 'riniba_02[riniba]',
+        'riniba_03' => 'riniba_03[riniba]'
     ],
-    // 语言
+    // 语言 
     'language' => [
         'zh_CN' => '简体中文',
         'zh_TW' => '繁体中文',
