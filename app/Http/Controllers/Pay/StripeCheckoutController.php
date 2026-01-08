@@ -69,17 +69,25 @@ class StripeCheckoutController extends PayController
         $data = json_decode($payload, true);
         if(!array_key_exists('client_reference_id', $data['data']['object'])){
             // return 'order error';
-            http_response_code(200);
-            exit();
+            // 不存在订单号
+            // http_response_code(200);
+            // exit();
+            return 'order error 1';
+        }
+        if(!$data['data']['object']['client_reference_id']){
+            //不存在订单号
+            // http_response_code(200);
+            // exit();
+            return 'order error 2';
         }
         if(!$this->orderService->detailOrderSN($data['data']['object']['client_reference_id'])){
-            return 'order error';
+            return 'order error 3';
             // http_response_code(200);
             // exit();
         }
         $order = $this->orderService->detailOrderSN($data['data']['object']['client_reference_id']);
         if(!$this->payService->detail($order->pay_id)){
-            return 'order error';
+            return 'order error 4';
             // http_response_code(200);
             // exit();
         }
